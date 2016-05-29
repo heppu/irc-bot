@@ -21,4 +21,4 @@ This module saves all links postetd to channels and notifies you with annoying m
 - [boltdb](https://github.com/boltdb/bolt) Key value strore written in Go
 - [sorcix irc](https://github.com/sorcix/irc) Simple irc library
 - [xurls](https://github.com/mvdan/xurls) Url parser
-- [jun irc-client](https://github.com/heppu/jun) IRC client, forked from [FSX](https://github.com/FSX/jun) 
+- [jun irc-client](https://github.com/heppu/jun) IRC client, forked from [FSX](https://github.com/FSX/jun)

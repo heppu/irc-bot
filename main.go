@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/boltdb/bolt"
 	"github.com/heppu/irc-bot/ops"
@@ -17,7 +18,7 @@ const (
 	BOT_NAME   = "bot-asd-123"
 )
 
-var channels = []string{"#channel.asd"}
+var channels = []string{"#gobot"}
 
 func main() {
 	db, err := bolt.Open(DB_NAME, 0600, nil)
@@ -25,13 +26,13 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	//delay := 500 * time.Microsecond
+	delay := 500 * time.Microsecond
 	c := client.New(
 		IRC_SERVER,
 		BOT_NAME,
 		channels,
 		nil,
-		nil,
+		&delay,
 	)
 
 	// Create wanha bots

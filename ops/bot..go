@@ -60,6 +60,8 @@ func (b *Bot) handlePrivMessage(message *irc.Message) {
 	}
 
 	arr := strings.Split(message.Trailing, " ")
+	removeDuplicates(&arr)
+
 	if len(arr) == 1 {
 		b.handleOpsPrint(channel, message.Name)
 		return
@@ -159,10 +161,10 @@ func (b *Bot) handleOpsPrint(channel, nick string) {
 		}
 
 		v := bucket.Get([]byte(nick))
-		if v != nil {
-			i, _ = binary.Varint(v)
+		if v == nil {
+			return nil
 		}
-
+		i, _ = binary.Varint(v)
 		b.irc.Privmsg(channel, fmt.Sprintf("%s ops count: %d", nick, i))
 		return nil
 	})
@@ -174,4 +176,17 @@ func dec(i int64) int64 {
 
 func inc(i int64) int64 {
 	return i + 1
+}
+
+func removeDuplicates(xs *[]string) {
+	found := make(map[string]bool)
+	j := 0
+	for i, x := range *xs {
+		if !found[x] {
+			found[x] = true
+			(*xs)[j] = (*xs)[i]
+			j++
+		}
+	}
+	*xs = (*xs)[:j]
 }

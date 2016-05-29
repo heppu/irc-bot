@@ -11,8 +11,8 @@ This:
 ```
 Would show that user heppu has ops count of 2.
 ### Command
-- !ops - show you own ops count
-- !ops nick1 nick2 - show ops count given for users.
+- !ops - show your ops count
+- !ops nick1 nick2 - show ops count for given users
 
 ## wanha
 This module saves all links postetd to channels and notifies you with annoying message if you posted a link that someone else has already posted.

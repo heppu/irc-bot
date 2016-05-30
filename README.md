@@ -10,7 +10,7 @@ This:
 /MODE +o heppu
 ```
 Would show that user heppu has ops count of 2.
-### Command
+##### Commands
 - !ops - show your ops count
 - !ops nick1 nick2 - show ops count for given users
 

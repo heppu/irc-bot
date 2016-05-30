@@ -1,5 +1,5 @@
 # IRC-bot
-This is IRC bot written in golang. It has two modules; ops and wanha.
+IRC bot written in golang which has two module:
 
 ## ops
 This module keeps track how many ops each user has (incremental credentials).

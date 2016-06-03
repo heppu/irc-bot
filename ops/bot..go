@@ -12,10 +12,11 @@ import (
 )
 
 const (
-	BUCKET_PREFIX = "ops_"
-	IRC_PREFIX    = "!ops"
-	INC_OPS       = "+o"
-	DEC_OPS       = "-o"
+	BUCKET_PREFIX    = "ops_"
+	COMMAND_1_PREFIX = "!ops"
+	COMMAND_2_PREFIX = ".ops"
+	INC_OPS          = "+o"
+	DEC_OPS          = "-o"
 )
 
 type Bot struct {
@@ -50,7 +51,8 @@ func (b *Bot) addCallbacks() {
 
 func (b *Bot) handlePrivMessage(message *irc.Message) {
 	// Check that this message was ment to our bot
-	if !strings.HasPrefix(message.Trailing, IRC_PREFIX) {
+	if !strings.HasPrefix(message.Trailing, COMMAND_1_PREFIX) &&
+		!strings.HasPrefix(message.Trailing, COMMAND_2_PREFIX) {
 		return
 	}
 

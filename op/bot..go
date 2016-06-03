@@ -1,35 +1,29 @@
-package ops
+package op
 
 import (
-	"encoding/binary"
 	"fmt"
-	"log"
 	"strings"
 
-	"github.com/boltdb/bolt"
 	"github.com/heppu/jun/client"
 	"github.com/sorcix/irc"
 )
 
 const (
-	BUCKET_PREFIX    = "ops_"
 	COMMAND_1_PREFIX = "!op "
 	COMMAND_2_PREFIX = ".op "
 )
 
 type Bot struct {
 	irc *client.Client
-	db  *bolt.DB
 }
 
 type UrlInfo struct {
 	OpCount int
 }
 
-func NewBot(ircClient *client.Client, db *bolt.DB) *Bot {
+func NewBot(ircClient *client.Client) *Bot {
 	bot := &Bot{
 		irc: ircClient,
-		db:  db,
 	}
 	bot.addCallbacks()
 	return bot
@@ -60,15 +54,14 @@ func (b *Bot) handlePrivMessage(message *irc.Message) {
 	if len(arr) < 2 {
 		return
 	}
-	modes := "+"
-	nicks := ""
+
 	for _, nick := range arr[1:] {
-		modes += "o"
-		nicks += nick + " "
+		if len(nick) > 0 {
+			msg := fmt.Sprintf("MODE %s +o %s", channel, nick)
+			b.irc.Raw(msg)
+		}
 	}
 
-	msg := fmt.Sprintf("/MODE %s %s", modes, nicks)
-	b.irc.Raw(msg)
 }
 
 func filter(xs *[]string, me string) {

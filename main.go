@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/boltdb/bolt"
+	"github.com/heppu/irc-bot/op"
 	"github.com/heppu/irc-bot/ops"
 	"github.com/heppu/irc-bot/wanha"
 	"github.com/heppu/jun/client"
@@ -62,6 +63,7 @@ func main() {
 	)
 
 	// Create bots
+	op.NewBot(c)
 	wanha.NewBot(c, db)
 	ops.NewBot(c, db)
 

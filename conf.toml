@@ -1,5 +1,5 @@
-name      = "bot_name"
-channels  = ["#chan1", "chan2"]
+name      = "nakkitanepotti"
+channels  = ["#gobot"]
 server    = "irc.ca.ircnet.net:6667"
 database  = "ircbot.db"
 delay     = 500 # milliseconds

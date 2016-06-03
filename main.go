@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
@@ -10,35 +11,61 @@ import (
 	"github.com/heppu/irc-bot/ops"
 	"github.com/heppu/irc-bot/wanha"
 	"github.com/heppu/jun/client"
+	"github.com/naoina/toml"
 )
 
-const (
-	DB_NAME    = "ircbot.db"
-	IRC_SERVER = "irc.ca.ircnet.net:6667"
-	BOT_NAME   = "bot-asd-123"
-)
+type Config struct {
+	Name     string
+	Channels []string
+	Server   string
+	Database string
+	Delay    uint
+}
 
-var channels = []string{"#gobot"}
+const CONF_FILE = "conf.toml"
+
+var conf Config
+
+// Init configurations
+func init() {
+	file, err := os.Open(CONF_FILE)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	buf, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := toml.Unmarshal(buf, &conf); err != nil {
+		log.Fatal(err)
+	}
+}
 
 func main() {
-	db, err := bolt.Open(DB_NAME, 0600, nil)
+	// Open boltdb
+	db, err := bolt.Open(conf.Database, 0600, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	delay := 500 * time.Microsecond
+	// Initialize new irc client
+	delay := time.Duration(conf.Delay) * time.Millisecond
 	c := client.New(
-		IRC_SERVER,
-		BOT_NAME,
-		channels,
+		conf.Server,
+		conf.Name,
+		conf.Channels,
 		nil,
 		&delay,
 	)
 
-	// Create wanha bots
+	// Create bots
 	wanha.NewBot(c, db)
 	ops.NewBot(c, db)
 
+	// Connect to server
 	if err = c.Connect(); err != nil {
 		log.Fatal(err)
 	}
